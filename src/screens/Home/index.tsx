@@ -1,3 +1,4 @@
+import React, { useState }  from 'react';
 import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 
 import { Participant } from '../../components/Participant';
@@ -5,21 +6,25 @@ import { Participant } from '../../components/Participant';
 import { Styles } from './styles';
 
 export function Home() {
-  const participants = ['Samuel','Batista','React','Native','Mobile','Aula 2','Dia 2','Ferias',
-    'Testando','Terça feira','TypeScript','Lista'
-  ];
+  const [participants, setParticipants] = useState<string[]>([]);
+  const [participantName, setParticipantName] = useState('');
 
-  function handleParticiántAdd() {
-    if(participants.includes("Samuel")){
+  function handleParticiantAdd() {
+    if(participants.includes(participantName)){
       return Alert.alert("Participante existe", "Já existe um participante com esse nome na lista!") 
     } 
+
+    setParticipants(prevState => [...prevState, participantName]);
+    setParticipantName('');
+
   }
 
-  function handleParticiántRemove(name: string) {
+  function handleParticiantRemove(name: string) {
+    
     Alert.alert("Remover", `Remover o aprticipante ${name}?`, [
       {
         text: 'Sim',
-        onPress: () => Alert.alert('Deletado com sucesso!')
+        onPress: () => setParticipants(prevtState => prevtState.filter(participant => participant !== name))
       },
       {
         text: 'Não',
@@ -42,9 +47,11 @@ export function Home() {
         <TextInput style={Styles.input} 
           placeholder="Nome do participante"
           placeholderTextColor={'#6b6b6b'}
+          onChangeText={setParticipantName}
+          value={participantName}
         />
 
-        <TouchableOpacity style={Styles.button} onPress={handleParticiántAdd}>
+        <TouchableOpacity style={Styles.button} onPress={handleParticiantAdd}>
           <Text style={Styles.buttonText}>
             +
           </Text>
@@ -58,7 +65,7 @@ export function Home() {
           <Participant 
             key={item}
             name={item} 
-            onRemove={() => handleParticiántRemove(item)}/>
+            onRemove={() => handleParticiantRemove(item)}/>
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
