@@ -16,11 +16,9 @@ export function Home() {
 
     setParticipants(prevState => [...prevState, participantName]);
     setParticipantName('');
-
   }
 
   function handleParticiantRemove(name: string) {
-    
     Alert.alert("Remover", `Remover o aprticipante ${name}?`, [
       {
         text: 'Sim',
@@ -67,6 +65,7 @@ export function Home() {
             name={item} 
             onRemove={() => handleParticiantRemove(item)}/>
         )}
+        
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Text style={Styles.listEmptyText}>
